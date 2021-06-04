@@ -1,0 +1,25 @@
+load("@rules_cc//cc:defs.bzl", "cc_library")
+
+_copts = select({
+    "@bazel_tools//src/conditions:windows": ["/std:c++latest"],
+    "@bazel_tools//src/conditions:windows_msvc": ["/std:c++latest"],
+    "//conditions:default": ["-std=c++20"],
+})
+
+
+cc_library(
+    name = "impl",
+    copts = _copts,
+    srcs = ["src/include/nanobench.h"],
+    local_defines = ["ANKERL_NANOBENCH_IMPLEMENT"],
+)
+
+cc_library(
+    name = "nanobench",
+    visibility = ["//visibility:public"],
+    strip_include_prefix = "src/include",
+    includes = ["src/include"],
+    copts = _copts,
+    hdrs = ["src/include/nanobench.h"],
+    deps = [":impl"],
+)

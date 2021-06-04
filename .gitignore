@@ -5,3 +5,4 @@
 **/perf.data
 **/perf.data.old
 /src/docs/_build
+/bazel-*
